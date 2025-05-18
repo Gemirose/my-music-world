@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>音乐歌单共享</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #f4c6cf;
+    }
+
+    .container {
+      background-color: #222;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      width: 80%;
+      text-align: center;
+    }
+
+    .album-carousel {
+      position: relative;
+      width: 100%;
+      height: 350px;  /* 调整容器高度以适应文本 */
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .carousel-inner {
+      display: flex;
+      transition: transform 1s ease-in-out;
+      position: absolute;
+    }
+
+    .carousel-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 20px;
+      text-align: center;
+    }
+
+    .album-carousel img {
+      width: auto;  /* 设置图片宽度为自动，确保图片按原始比例显示 */
+      height: 200px;  /* 设置高度 */
+      cursor: pointer;
+      border-radius: 10px;
+      object-fit: contain; /* 保持图片比例 */
+    }
+
+    .song-name {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #fff;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 音频播放器优化 */
+    audio {
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #9ce6f1, #fbc0d9);
+      border: none;
+      color: #fff;
+      padding: 10px;
+      font-size: 16px;
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 自定义音频控件 */
+    audio::-webkit-media-controls-panel {
+      background-color: transparent;
+      border-radius: 15px;
+    }
+
+    audio::-webkit-media-controls-play-button,
+    audio::-webkit-media-controls-volume-slider {
+      background-color: transparent;
+      color: #f4c6cf;
+    }
+
+    audio::-webkit-media-controls-volume-slider {
+      border-radius: 10px;
+      background-color: #444;
+    }
+
+    audio::-webkit-media-controls-play-button {
+      font-size: 1.2em;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ffa6d5;
+    }
+
+    /* 按钮样式优化 */
+    .carousel-btns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .carousel-btns button {
+      background: linear-gradient(145deg, rgb(156, 230, 241), #fbc0d9); /* 渐变背景 */
+      border: none;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 30px; /* 圆角效果 */
+      transition: all 0.3s ease; /* 平滑过渡效果 */
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+    }
+
+    .carousel-btns button:hover {
+      background: linear-gradient(145deg, rgb(251, 192, 217), #9ce6f1); /* 悬停时反转渐变颜色 */
+      transform: translateY(-4px); /* 鼠标悬停时按钮稍微上浮 */
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3); /* 增加阴影 */
+    }
+
+    .carousel-btns button:active {
+      transform: translateY(2px); /* 按钮按下时稍微向下 */
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 按钮按下时减少阴影 */
+    }
+
+    /* 音频播放器容器居中 */
+    .audio-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>我的音乐歌单</h1>
+
+  <div class="album-carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item">
+        <img src="pink venom.jpg" alt="Pink Venom" data-src="Pink Venom.mp3">
+        <div class="song-name">Pink Venom</div>
+      </div>
+      <div class="carousel-item">
+        <img src="bornpink.jpg" alt="Shut Down" data-src="Shut Down.mp3">
+        <div class="song-name">Shut Down</div>
+      </div>
+      <div class="carousel-item">
+        <img src="how you like that.jpg" alt="How You Like That" data-src="How You Like That.mp3">
+        <div class="song-name">How You Like That</div>
+      </div>
+      <div class="carousel-item">
+        <img src="the girls.jpg" alt="The Girls" data-src="THE GIRLS (BLACKPINK THE GAME OST).mp3">
+        <div class="song-name">The Girls</div>
+      </div>
+      <div class="carousel-item">
+        <img src="秀.jpg " alt="earthquake" data-src="earthquake.mp3">
+        <div class="song-name">Earthquake</div>
+      </div>
+      <div class="carousel-item">
+        <img src="妮1.jpg" alt="Mantra (Explicit)" data-src="Mantra (Explicit).mp3">
+        <div class="song-name">Mantra (Explicit)</div>
+      </div>
+      <div class="carousel-item">
+        <img src="妮2.jpg" alt="like JENNIE (Explicit)" data-src="like JENNIE (Explicit).mp3">
+        <div class="song-name">Like JENNIE (Explicit)</div>
+      </div>
+      <div class="carousel-item">
+        <img src="肉1.jpg" alt="Toxic till the end" data-src="Toxic till the end.mp3">
+        <div class="song-name">Toxic till the End</div>
+      </div>
+      <div class="carousel-item">
+        <img src="肉2.jpg" alt="gameboy" data-src="gameboy.mp3">
+        <div class="song-name">Gameboy</div>
+      </div>
+      <div class="carousel-item">
+        <img src="肉3.jpg" alt="drinks or coffee.mp3" data-src="drinks or coffee.mp3">
+        <div class="song-name">Drinks or Coffee</div>
+      </div>
+      <div class="carousel-item">
+        <img src="NOG.jpg" alt="number one girl" data-src="number one girl.mp3">
+        <div class="song-name">Number One Girl</div>
+      </div>
+      <div class="carousel-item">
+        <img src="莎2.jpg" alt="Rockstar" data-src="Rockstar.mp3">
+        <div class="song-name">Rockstar</div>
+      </div>
+      <div class="carousel-item">
+        <img src="莎1.jpg" alt="Thunder" data-src="Thunder.mp3">
+        <div class="song-name">Thunder</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-btns">
+    <button id="prevBtn">◀</button>
+    <button id="nextBtn">▶</button>
+  </div>
+
+  <!-- 音频播放器容器居中 -->
+  <div class="audio-container">
+    <audio id="audioPlayer" controls>
+      <source id="audioSource" src="" type="audio/mpeg">
+      您的浏览器不支持音频元素。
+    </audio>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 Gemirose music world</p>
+  </div>
+</div>
+
+<script>
+  const albumImages = document.querySelectorAll('.album-carousel img');
+  const audioPlayer = document.getElementById('audioPlayer');
+  const audioSource = document.getElementById('audioSource');
+  const carouselInner = document.querySelector('.carousel-inner');
+  const totalAlbums = albumImages.length;
+  let currentIndex = 0;
+
+  albumImages.forEach(image => {
+    image.addEventListener('click', () => {
+      const songURL = image.getAttribute('data-src');
+      audioSource.src = songURL;
+      audioPlayer.load();
+      audioPlayer.play();
+    });
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    currentIndex = (currentIndex === 0) ? totalAlbums - 1 : currentIndex - 1;
+    updateCarousel();
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    currentIndex = (currentIndex === totalAlbums - 1) ? 0 : currentIndex + 1;
+    updateCarousel();
+  });
+
+  function updateCarousel() {
+    const offset = -currentIndex * 220;
+    carouselInner.style.transform = `translateX(${offset}px)`;
+  }
+
+  updateCarousel();
+</script>
+
+</body>
+</html>
