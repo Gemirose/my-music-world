@@ -13,7 +13,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       color: #f4c6cf;
     }
 
@@ -23,15 +23,27 @@
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
       padding: 20px;
       width: 80%;
+      max-width: 800px;
       text-align: center;
+      position: relative;
+    }
+
+    .album-carousel, .album-details {
+      position: relative;
+      width: 100%;
+      margin-bottom: 20px;
     }
 
     .album-carousel {
-      position: relative;
-      width: 100%;
-      height: 350px;  /* 调整容器高度以适应文本 */
+      height: 350px;
       overflow: hidden;
-      margin-bottom: 20px;
+    }
+
+    .album-details {
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .carousel-inner {
@@ -48,22 +60,42 @@
       text-align: center;
     }
 
-    .album-carousel img {
-      width: auto;  /* 设置图片宽度为自动，确保图片按原始比例显示 */
-      height: 200px;  /* 设置高度 */
+    .album-carousel img, .album-details img {
+      width: auto;
+      height: 200px;
       cursor: pointer;
       border-radius: 10px;
-      object-fit: contain; /* 保持图片比例 */
+      object-fit: contain;
     }
 
-    .song-name {
+    .song-name, .track-item {
       margin-top: 10px;
       font-size: 16px;
       color: #fff;
       text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
     }
 
-    /* 音频播放器优化 */
+    .track-list {
+      margin-top: 20px;
+      text-align: left;
+      width: 100%;
+      max-height: none; /* Remove max-height to allow full display */
+      overflow-y: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .track-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .track-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+    }
+
     audio {
       width: 100%;
       margin-top: 20px;
@@ -76,7 +108,6 @@
       box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* 自定义音频控件 */
     audio::-webkit-media-controls-panel {
       background-color: transparent;
       border-radius: 15px;
@@ -104,43 +135,45 @@
       color: #ffa6d5;
     }
 
-    /* 按钮样式优化 */
-    .carousel-btns {
+    .carousel-btns, .back-btn {
       display: flex;
       justify-content: space-between;
       margin-top: 10px;
     }
 
-    .carousel-btns button {
-      background: linear-gradient(145deg, rgb(156, 230, 241), #fbc0d9); /* 渐变背景 */
+    .carousel-btns button, .back-btn button {
+      background: linear-gradient(145deg, rgb(156, 230, 241), #fbc0d9);
       border: none;
       color: #fff;
       padding: 12px 20px;
       font-size: 18px;
       cursor: pointer;
-      border-radius: 30px; /* 圆角效果 */
-      transition: all 0.3s ease; /* 平滑过渡效果 */
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .carousel-btns button:hover {
-      background: linear-gradient(145deg, rgb(251, 192, 217), #9ce6f1); /* 悬停时反转渐变颜色 */
-      transform: translateY(-4px); /* 鼠标悬停时按钮稍微上浮 */
-      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3); /* 增加阴影 */
+    .carousel-btns button:hover, .back-btn button:hover {
+      background: linear-gradient(145deg, rgb(251, 192, 217), #9ce6f1);
+      transform: translateY(-4px);
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .carousel-btns button:active {
-      transform: translateY(2px); /* 按钮按下时稍微向下 */
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 按钮按下时减少阴影 */
+    .carousel-btns button:active, .back-btn button:active {
+      transform: translateY(2px);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* 音频播放器容器居中 */
     .audio-container {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       padding: 10px;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -151,59 +184,67 @@
 
   <div class="album-carousel">
     <div class="carousel-inner">
-      <div class="carousel-item">
+      <div class="carousel-item" data-album="Pink Venom">
         <img src="pink venom.jpg" alt="Pink Venom" data-src="Pink Venom.mp3">
         <div class="song-name">Pink Venom</div>
       </div>
-      <div class="carousel-item">
-        <img src="bornpink.jpg" alt="Shut Down" data-src="Shut Down.mp3">
-        <div class="song-name">Shut Down</div>
+      <div class="carousel-item" data-album="BORN PINK">
+        <img src="bornpink.jpg" alt="BORN PINK" data-src="Shut Down.mp3">
+        <div class="song-name">BORN PINK</div>
       </div>
-      <div class="carousel-item">
-        <img src="how you like that.jpg" alt="How You Like That" data-src="How You Like That.mp3">
-        <div class="song-name">How You Like That</div>
+      <div class="carousel-item" data-album="THE ALBUM">
+        <img src="how you like that.jpg" alt="THE ALBUM" data-src="How You Like That.mp3">
+        <div class="song-name">THE ALBUM</div>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-album="The Girls">
         <img src="the girls.jpg" alt="The Girls" data-src="THE GIRLS (BLACKPINK THE GAME OST).mp3">
         <div class="song-name">The Girls</div>
       </div>
-      <div class="carousel-item">
-        <img src="秀.jpg " alt="earthquake" data-src="earthquake.mp3">
-        <div class="song-name">Earthquake</div>
+      <div class="carousel-item" data-album="AMORTAGE">
+        <img src="秀.jpg" alt="AMORTAGE" data-src="earthquake.mp3">
+        <div class="song-name">AMORTAGE</div>
       </div>
-      <div class="carousel-item">
-        <img src="妮1.jpg" alt="Mantra (Explicit)" data-src="Mantra (Explicit).mp3">
-        <div class="song-name">Mantra (Explicit)</div>
+      <div class="carousel-item" data-album="RUBY">
+        <img src="妮1.jpg" alt="RUBY" data-src="Mantra (Explicit).mp3">
+        <div class="song-name">RUBY</div>
       </div>
-      <div class="carousel-item">
-        <img src="妮2.jpg" alt="like JENNIE (Explicit)" data-src="like JENNIE (Explicit).mp3">
+      <div class="carousel-item" data-album="like JENNIE">
+        <img src="妮2.jpg" alt="like JENNIE" data-src="like JENNIE (Explicit).mp3">
         <div class="song-name">Like JENNIE (Explicit)</div>
       </div>
-      <div class="carousel-item">
-        <img src="肉1.jpg" alt="Toxic till the end" data-src="Toxic till the end.mp3">
-        <div class="song-name">Toxic till the End</div>
+      <div class="carousel-item" data-album="ROSIE">
+        <img src="肉1.jpg" alt="ROSIE" data-src="Toxic till the end.mp3">
+        <div class="song-name">ROSIE</div>
       </div>
-      <div class="carousel-item">
-        <img src="肉2.jpg" alt="gameboy" data-src="gameboy.mp3">
-        <div class="song-name">Gameboy</div>
+      <div class="carousel-item" data-album="ROSIE2">
+        <img src="肉2.jpg" alt="ROSIE2" data-src="gameboy.mp3">
+        <div class="song-name">ROSIE2</div>
       </div>
-      <div class="carousel-item">
-        <img src="肉3.jpg" alt="drinks or coffee.mp3" data-src="drinks or coffee.mp3">
-        <div class="song-name">Drinks or Coffee</div>
+      <div class="carousel-item" data-album="ROSIE3">
+        <img src="肉3.jpg" alt="ROSIE3" data-src="drinks or coffee.mp3">
+        <div class="song-name">ROSIE3</div>
       </div>
-      <div class="carousel-item">
-        <img src="NOG.jpg" alt="number one girl" data-src="number one girl.mp3">
+      <div class="carousel-item" data-album="Number One Girl">
+        <img src="NOG.jpg" alt="Number One Girl" data-src="number one girl.mp3">
         <div class="song-name">Number One Girl</div>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-album="Rockstar">
         <img src="莎2.jpg" alt="Rockstar" data-src="Rockstar.mp3">
         <div class="song-name">Rockstar</div>
       </div>
-      <div class="carousel-item">
-        <img src="莎1.jpg" alt="Thunder" data-src="Thunder.mp3">
-        <div class="song-name">Thunder</div>
+      <div class="carousel-item" data-album="ALTER EGO">
+        <img src="莎1.jpg" alt="ALTER EGO" data-src="Thunder.mp3">
+        <div class="song-name">ALTER EGO</div>
       </div>
     </div>
+  </div>
+
+  <div class="album-details hidden">
+    <div class="album-header">
+      <img id="albumImage" src="" alt="">
+      <div class="song-name" id="albumTitle"></div>
+    </div>
+    <div class="track-list" id="trackList"></div>
   </div>
 
   <div class="carousel-btns">
@@ -211,7 +252,10 @@
     <button id="nextBtn">▶</button>
   </div>
 
-  <!-- 音频播放器容器居中 -->
+  <div class="back-btn hidden">
+    <button id="backBtn">Back</button>
+  </div>
+
   <div class="audio-container">
     <audio id="audioPlayer" controls>
       <source id="audioSource" src="" type="audio/mpeg">
@@ -229,15 +273,133 @@
   const audioPlayer = document.getElementById('audioPlayer');
   const audioSource = document.getElementById('audioSource');
   const carouselInner = document.querySelector('.carousel-inner');
+  const albumCarousel = document.querySelector('.album-carousel');
+  const albumDetails = document.querySelector('.album-details');
+  const trackList = document.getElementById('trackList');
+  const albumImage = document.getElementById('albumImage');
+  const albumTitle = document.getElementById('albumTitle');
+  const carouselBtns = document.querySelector('.carousel-btns');
+  const backBtn = document.getElementById('backBtn');
+  const backBtnContainer = document.querySelector('.back-btn');
   const totalAlbums = albumImages.length;
   let currentIndex = 0;
 
+  // Album track data
+  const albumTracks = {
+    'like JENNIE': [
+      { name: 'like JENNIE (Explicit)', src: 'like JENNIE (Explicit).mp3', duration: '2:03' },
+      { name: 'like JENNIE (Peggy Gou Remix)', src: 'like JENNIE (Peggy Gou Remix).mp3', duration: '3:28' },
+      { name: 'like JENNIE (Peggy Gou Remix - EXTENDED MIX | Explicit)', src: 'like JENNIE (Peggy Gou Remix - EXTENDED MIX | Explicit).mp3', duration: '5:07' }
+    ],
+    'Pink Venom': [{ name: 'Pink Venom', src: 'Pink Venom.mp3', duration: '3:06' }],
+    'BORN PINK': [{ name: 'Pink Venom', src: 'Pink Venom.mp3', duration: '3:06' },
+      { name: 'Shut Down', src: 'Shut Down.mp3', duration: '2:55' },
+      { name: 'Typa Girl (Explicit ver.)', src: 'Typa Girl (Explicit ver.).mp3', duration: '2:59' },
+      { name: 'Yeah Yeah Yeah', src: 'Yeah Yeah Yeah.mp3', duration: '2:58' },
+      { name: 'Hard to Love (Explicit ver.)', src: 'Hard to Love (Explicit ver.).mp3', duration: '2:42' },
+      { name: 'The Happiest Girl', src: 'The Happiest Girl.mp3', duration: '3:42' },
+      { name: 'Tally (Explicit ver.)', src: 'Tally (Explicit ver.).mp3', duration: '3:04' },
+      { name: 'Ready For Love', src: 'Ready For Love.mp3', duration: '3:04' },],
+    'THE ALBUM': [
+      { name: 'How You Like That', src: 'How You Like That.mp3', duration: '3:00' },
+      { name: 'Ice Cream (with Selena Gomez)', src: 'Ice Cream (with Selena Gomez).mp3', duration: '2:55' },
+      { name: 'Pretty Savage', src: 'Pretty Savage.mp3', duration: '3:19' },
+      { name: 'Bet You Wanna (Feat. Cardi B)', src: 'Bet You Wanna (Feat. Cardi B).mp3', duration: '2:39' },
+      { name: 'Lovesick Girls', src: 'Lovesick Girls.mp3', duration: '3:12' },
+      { name: 'Crazy Over You', src: 'Crazy Over You.mp3', duration: '2:41' },
+      { name: 'Love To Hate Me', src: 'Love To Hate Me.mp3', duration: '2:49' },
+      { name: 'You Never Know', src: 'You Never Know.mp3', duration: '3:49' },],
+    'The Girls': [{ name: 'The Girls', src: 'THE GIRLS (BLACKPINK THE GAME OST).mp3', duration: '2:43' }],
+    'AMORTAGE': [
+      { name: 'Earthquake', src: 'earthquake.mp3', duration: '3:00' },
+      { name: 'YOUR LOVE', src: 'YOUR LOVE.mp3', duration: '2:53' },
+      { name: 'TEARS', src: 'TEARS.mp3', duration: '3:02' },
+      { name: 'HUGS & KISSES', src: 'HUGS & KISSES.mp3', duration: '3:09' }
+    ],
+    'RUBY': [
+      { name: 'Intro: JANE with FKJ', src: 'Intro: JANE with FKJ.mp3', duration: '2:53' },
+      { name: 'like JENNIE (Explicit)', src: 'like JENNIE (Explicit).mp3', duration: '2:03' },
+      { name: 'start a war (Explicit)', src: 'start a war (Explicit).mp3', duration: '2:45' },
+      { name: 'Handlebars (feat. Dua Lipa) (Explicit)', src: 'Handlebars (feat. Dua Lipa) (Explicit).mp3', duration: '3:04' },
+      { name: 'with the IE (way up) (Explicit)', src: 'with the IE (way up) (Explicit).mp3', duration: '2:43' },
+      { name: 'ExtraL (feat. Doechii) (Explicit)', src: 'ExtraL (feat. Doechii) (Explicit).mp3', duration: '2:47'},
+      { name: 'Mantra (Explicit)', src: 'Mantra (Explicit).mp3', duration: '2:16' },
+      { name: 'Love Hangover (feat. Dominic Fike) (Explicit)', src: 'Love Hangover (feat. Dominic Fike) (Explicit).mp3', duration: '3:00' },
+      { name: 'ZEN (Explicit)', src: 'ZEN (Explicit).mp3', duration: '3:21' },
+      { name: 'Damn Right (feat. Childish Gambino and Kali Uchis) (Explicit)', src: 'Damn Right (feat. Childish Gambino and Kali Uchis) (Explicit).mp3', duration: '3:50' },
+      { name: 'F.T.S (Explicit)', src: 'F.T.S (Explicit).mp3', duration: '2:32' },
+      { name: 'Filter (Explicit)', src: 'Filter (Explicit).mp3', duration: '2:31' },
+      { name: 'Seoul City', src: 'Seoul City.mp3', duration: '2:44' },
+      { name: 'Starlight (Explicit)', src: 'Starlight (Explicit).mp3', duration: '2:48' },
+      { name: 'twin', src: 'twin.mp3', duration: '3:28' }
+    ],
+    'ROSIE': [
+      { name: 'number one girl', src: 'number one girl.mp3', duration: '3:36' },
+      { name: '3am', src: '3am.mp3', duration: '2:34' },
+      { name: 'two years', src: 'two years.mp3', duration: '2:47' },
+      { name: 'toxic till the end', src: 'toxic till the end.mp3', duration: '2:36' },
+      { name: 'drinks or coffee', src: 'drinks or coffee.mp3', duration: '2:13' },
+      { name: 'APT.', src: 'APT..mp3', duration: '2:49'},
+      { name: 'gameboy', src: 'gameboy.mp3', duration: '2:46' },
+      { name: 'stay a little longer', src: 'stay a little longer.mp3', duration: '4:06' },
+      { name: 'not the same', src: 'not the same.mp3', duration: '3:04' },
+      { name: 'call it the end', src: 'call it the end.mp3', duration: '2:21' },
+      { name: 'too bad for us', src: 'too bad for us.mp3', duration: '3:56' },
+      { name: 'dance all night', src: 'dance all night.mp3', duration: '3:34' },
+    ],
+    'ROSIE2': [
+      { name: 'number one girl', src: 'number one girl.mp3', duration: '3:36' },
+      { name: '3am', src: '3am.mp3', duration: '2:34' },
+      { name: 'two years', src: 'two years.mp3', duration: '2:47' },
+      { name: 'toxic till the end', src: 'toxic till the end.mp3', duration: '2:36' },
+      { name: 'drinks or coffee', src: 'drinks or coffee.mp3', duration: '2:13' },
+      { name: 'APT.', src: 'APT..mp3', duration: '2:49'},
+      { name: 'gameboy', src: 'gameboy.mp3', duration: '2:46' },
+      { name: 'stay a little longer', src: 'stay a little longer.mp3', duration: '4:06' },
+      { name: 'not the same', src: 'not the same.mp3', duration: '3:04' },
+      { name: 'call it the end', src: 'call it the end.mp3', duration: '2:21' },
+      { name: 'too bad for us', src: 'too bad for us.mp3', duration: '3:56' },
+      { name: 'dance all night', src: 'dance all night.mp3', duration: '3:34' },
+    ],
+    'ROSIE3': [
+      { name: 'number one girl', src: 'number one girl.mp3', duration: '3:36' },
+      { name: '3am', src: '3am.mp3', duration: '2:34' },
+      { name: 'two years', src: 'two years.mp3', duration: '2:47' },
+      { name: 'toxic till the end', src: 'toxic till the end.mp3', duration: '2:36' },
+      { name: 'drinks or coffee', src: 'drinks or coffee.mp3', duration: '2:13' },
+      { name: 'APT.', src: 'APT..mp3', duration: '2:49'},
+      { name: 'gameboy', src: 'gameboy.mp3', duration: '2:46' },
+      { name: 'stay a little longer', src: 'stay a little longer.mp3', duration: '4:06' },
+      { name: 'not the same', src: 'not the same.mp3', duration: '3:04' },
+      { name: 'call it the end', src: 'call it the end.mp3', duration: '2:21' },
+      { name: 'too bad for us', src: 'too bad for us.mp3', duration: '3:56' },
+      { name: 'dance all night', src: 'dance all night.mp3', duration: '3:34' },
+    ],
+    'Number One Girl': [{ name: 'Number One Girl', src: 'number one girl.mp3', duration: '3:36' }],
+    'Rockstar': [{ name: 'Rockstar', src: 'Rockstar.mp3', duration: '3:05' }],
+    'ALTER EGO': [
+      { name: 'Born Again ft. Doja Cat & RAYE', src: 'Born Again ft. Doja Cat & RAYE.mp3', duration: '3:51' },
+      { name: 'Rockstar', src: 'Rockstar.mp3', duration: '2:18' },
+      { name: 'Elastigirl', src: 'Elastigirl.mp3', duration: '2:57' },
+      { name: 'Thunder', src: 'Thunder.mp3', duration: '2:48' },
+      { name: 'New Woman ft. ROSALÍA', src: 'New Woman ft. ROSALÍA.mp3', duration: '2:59' },
+      { name: 'FXCK UP THE WORLD ft. Future', src: 'FXCK UP THE WORLD ft. Future.mp3', duration: '3:04'},
+      { name: 'Rapunzel ft. Megan Thee Stallion (Explicit)', src: 'Rapunzel ft. Megan Thee Stallion (Explicit).mp3', duration: '2:45' },
+      { name: 'Moonlit Floor (Kiss Me)', src: 'Moonlit Floor (Kiss Me).mp3', duration: '2:35' },
+      { name: 'When I\'m With You ft. Tyla', src: 'When I\'m With You ft. Tyla.mp3', duration: '2:52' },
+      { name: 'BADGRRRL', src: 'BADGRRRL.mp3', duration: '2:12' },
+      { name: 'Lifestyle (Explicit)', src: 'Lifestyle (Explicit).mp3', duration: '2:41' },
+      { name: 'Chill', src: 'Chill.mp3', duration: '2:39' },
+      { name: 'Dream', src: 'Dream.mp3', duration: '3:43' },
+      { name: 'FXCK UP THE WORLD (vixi solo version|Explicit)', src: 'FXCK UP THE WORLD (vixi solo version|Explicit).mp3', duration: '2:55' },
+      { name: 'Rapunzel (kiki solo version|Explicit)', src: 'Rapunzel (kiki solo version|Explicit).mp3', duration: '2:19' }
+    ]
+  };
+
   albumImages.forEach(image => {
     image.addEventListener('click', () => {
-      const songURL = image.getAttribute('data-src');
-      audioSource.src = songURL;
-      audioPlayer.load();
-      audioPlayer.play();
+      const albumName = image.parentElement.getAttribute('data-album');
+      showAlbumDetails(albumName, image.src);
     });
   });
 
@@ -251,9 +413,40 @@
     updateCarousel();
   });
 
+  backBtn.addEventListener('click', () => {
+    albumDetails.classList.add('hidden');
+    albumCarousel.classList.remove('hidden');
+    carouselBtns.classList.remove('hidden');
+    backBtnContainer.classList.add('hidden');
+  });
+
   function updateCarousel() {
     const offset = -currentIndex * 220;
     carouselInner.style.transform = `translateX(${offset}px)`;
+  }
+
+  function showAlbumDetails(albumName, imgSrc) {
+    albumCarousel.classList.add('hidden');
+    carouselBtns.classList.add('hidden');
+    albumDetails.classList.remove('hidden');
+    backBtnContainer.classList.remove('hidden');
+
+    albumImage.src = imgSrc;
+    albumTitle.textContent = albumName;
+    trackList.innerHTML = '';
+
+    const tracks = albumTracks[albumName] || [];
+    tracks.forEach(track => {
+      const trackItem = document.createElement('div');
+      trackItem.classList.add('track-item');
+      trackItem.textContent = `${track.name} (${track.duration})`;
+      trackItem.addEventListener('click', () => {
+        audioSource.src = track.src;
+        audioPlayer.load();
+        audioPlayer.play();
+      });
+      trackList.appendChild(trackItem);
+    });
   }
 
   updateCarousel();
