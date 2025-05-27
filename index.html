@@ -1,239 +1,560 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>音乐歌单共享</title>
+  <title>GEMIROSE MUSIC WORLD</title>
   <style>
+    :root {
+      /* 定义主题颜色 */
+      --primary-color: #fbc0d9; /* 主色调：粉色 */
+      --secondary-color: #fbc0d9; /* 辅色调：粉色 */
+      /* 深色背景 */
+      --background-dark: #2a2a2a; /* 整体深色背景 */
+      --background-darker: #1c1c1c; /* 元素更深的背景 */
+      /* 文本颜色 */
+      --text-color: #e0e0e0; /* 主要文本颜色 */
+      --text-secondary: #aaaaaa; /* 次要文本颜色 */
+      /* 渐变色 */
+      --gradient: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+      /* 阴影效果 */
+      --shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* 更明显的阴影 */
+      /* 圆角 */
+      --radius: 12px; /* 更大的圆角 */
+      /* 内边距 */
+      --padding: 20px; /* 增加内边距 */
+    }
+
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 更改字体，更现代 */
+      background-color: #202020; /* 更深的背景色 */
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      color: #f4c6cf;
+      color: var(--text-color);
+      line-height: 1.6; /* 增加行高 */
     }
 
     .container {
-      background-color: #222;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      width: 80%;
-      max-width: 800px;
+      background-color: var(--background-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: var(--padding);
+      width: 90%; /* 适当增加宽度 */
+      max-width: 960px; /* 增加最大宽度 */
       text-align: center;
-      position: relative;
+      box-sizing: border-box; /* 包含内边距和边框在宽度内 */
+      /* border: 1px solid rgba(255, 255, 255, 0.08); /* 容器边框 - 移除 */ */
+    }
+
+    h1 {
+      font-size: 32px; /* 标题更大 */
+      margin-bottom: 30px; /* 增加底部间距 */
+      color: var(--primary-color);
+      text-shadow: 0 3px 6px rgba(0,0,0,0.6); /* 标题阴影更深 */
+      letter-spacing: 1.5px; /* 增加字间距 */
     }
 
     .album-carousel, .album-details {
       position: relative;
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 25px; /* 增加间距 */
     }
 
     .album-carousel {
-      height: 350px;
+      height: 400px; /* 增加轮播高度 */
       overflow: hidden;
+      padding-top: 15px;
     }
 
     .album-details {
-      min-height: 350px;
+      min-height: 400px; /* 增加详情页最小高度 */
       display: flex;
       flex-direction: column;
       align-items: center;
+      background: var(--background-darker); /* 使用更深的背景变量 */
+      border-radius: var(--radius);
+      padding: var(--padding);
+      animation: fadeIn 0.6s ease-out; /* 动画稍慢 */
+      /* border: 1px solid rgba(255,255,255,0.15); /* 专辑详情边框更明显 - 移除 */ */
+    box-shadow: var(--shadow);
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); } /* 初始位置更低 */
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .album-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: var(--padding);
+    }
+
+    .album-header img {
+      width: auto;
+      height: 220px; /* 专辑封面稍大 */
+      border-radius: var(--radius);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* 专辑封面阴影更深 */
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      /* border: 2px solid rgba(255, 255, 255, 0.1); /* 专辑封面边框 - 移除 */ */
+    }
+
+    .album-header img:hover {
+      opacity: 0.95;
+      transform: scale(1.03); /* 悬停时放大更多 */
+    }
+
+    .album-header .song-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 20px; /* 增加间距 */
+      color: var(--secondary-color);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
 
     .carousel-inner {
       display: flex;
-      transition: transform 1s ease-in-out;
+      justify-content: center;
+      transition: transform 0.8s ease-in-out;
       position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 0; /* 增加垂直内边距 */
     }
 
     .carousel-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 0 20px;
+      margin: 0 25px; /* 增加左右间距 */
       text-align: center;
-    }
-
-    .album-carousel img, .album-details img {
-      width: auto;
-      height: 200px;
       cursor: pointer;
-      border-radius: 10px;
-      object-fit: contain;
+      padding: 15px; /* 增加内边距 */
+      border-radius: var(--radius);
+      background-color: rgba(255,255,255,0.05); /* 轻微背景色更明显 */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 轻微阴影更明显 */
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      /* border: 1px solid rgba(255,255,255,0.05); /* 轮播项边框 - 移除 */ */
     }
 
-    .song-name, .track-item {
-      margin-top: 10px;
+    .carousel-item:hover {
+      transform: scale(1.08); /* 悬停时放大更多 */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* 悬停时阴影更明显 */
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .album-carousel img {
+      width: auto;
+      height: 220px; /* 轮播专辑封面稍大 */
+      border-radius: var(--radius);
+      object-fit: contain;
+      loading: lazy;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .song-name {
+      margin-top: 12px;
       font-size: 16px;
-      color: #fff;
-      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+      font-weight: 600;
+      color: var(--text-color);
     }
 
     .track-list {
-      margin-top: 20px;
-      text-align: left;
       width: 100%;
-      max-height: none; /* Remove max-height to allow full display */
+      padding: var(--padding);
+      background: rgba(255, 255, 255, 0.08); /* 歌曲列表背景更明显 */
+      border-radius: var(--radius);
       overflow-y: auto;
-      padding: 10px;
-      box-sizing: border-box;
+      max-height: 280px; /* 增加最大高度 */
+      /* border: 1px solid rgba(255,255,255,0.15); /* 歌曲列表边框 - 移除 */ */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
     .track-item {
-      padding: 10px;
+      display: flex;
+      align-items: center;
+      padding: 12px 15px; /* 增加内边距 */
+      margin: 10px 0; /* 增加上下间距 */
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px; /* 更圆润的边角 */
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15); /* 轻微阴影更明显 */
     }
 
     .track-item:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.2); /* 悬停背景更明显 */
+      transform: translateY(-3px); /* 悬停时轻微上浮更多 */
+      box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    }
+
+    .track-item.playing {
+      background: var(--gradient);
+      color: #1a1a1a; /* 播放中文字颜色更深 */
+      font-weight: bold;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      animation: pulseHighlight 1s infinite alternate; /* 播放中增加脉冲动画 */
+    }
+
+    @keyframes pulseHighlight {
+      0% { transform: scale(1); box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
+      100% { transform: scale(1.01); box-shadow: 0 5px 12px rgba(0,0,0,0.5); }
+    }
+
+    .track-item::before {
+      content: '▶';
+      margin-right: 12px;
+      font-size: 16px;
+      opacity: 0.8;
+      transition: opacity 0.2s ease;
+    }
+
+    .track-item.playing::before {
+      content: '🎵';
+      color: #1a1a1a;
+      opacity: 1;
+    }
+
+    .track-item .track-number {
+      width: 35px; /* 调整宽度 */
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .track-item.playing .track-number {
+      color: #1a1a1a;
+    }
+
+    .track-item .track-name {
+      flex-grow: 1;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .track-item .track-duration {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .track-item.playing .track-duration {
+      color: rgba(26,26,26,0.8);
+    }
+
+    /* .track-item:not(:last-child) { /* 歌曲列表分割线 - 移除 */
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.18); */
+    /* } */
+
+    .audio-container {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.4)); /* 播放器背景渐变透明度调整 */
+      border-radius: var(--radius);
+      margin-top: var(--padding);
+      box-shadow: var(--shadow);
+      /* border: 1px solid rgba(255, 255, 255, 0.1); /* 播放器边框 - 移除 */ */
+    }
+
+    .current-track {
+      font-size: 18px; /* 字体更大 */
+      margin-bottom: 15px;
+      font-weight: 700;
+      color: var(--text-color);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
     audio {
       width: 100%;
-      margin-top: 20px;
-      border-radius: 15px;
-      background: linear-gradient(145deg, #9ce6f1, #fbc0d9);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.15); /* 播放器轨道背景更明显 */
       border: none;
-      color: #fff;
-      padding: 10px;
-      font-size: 16px;
-      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+      outline: none;
     }
 
     audio::-webkit-media-controls-panel {
-      background-color: transparent;
-      border-radius: 15px;
-    }
-
-    audio::-webkit-media-controls-play-button,
-    audio::-webkit-media-controls-volume-slider {
-      background-color: transparent;
-      color: #f4c6cf;
-    }
-
-    audio::-webkit-media-controls-volume-slider {
-      border-radius: 10px;
-      background-color: #444;
+      background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.5)); /* 播放器控制面板背景透明度调整 */
+      border-radius: var(--radius);
+      padding: 10px; /* 增加内边距 */
+      /* border: 1px solid transparent; /* 移除 */ */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
     audio::-webkit-media-controls-play-button {
-      font-size: 1.2em;
+      background: var(--gradient);
+      border-radius: 50%;
+      padding: 10px;
+      transition: background 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    }
+
+    audio::-webkit-media-controls-play-button:hover {
+      background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+      transform: scale(1.1); /* 悬停时放大更多 */
+    }
+
+    audio::-webkit-media-controls-volume-slider,
+    audio::-webkit-media-controls-timeline {
+      background: rgba(255,255,255,0.3); /* 进度条和音量条背景更明显 */
+      border-radius: 8px; /* 更大的圆角 */
+      height: 8px; /* 调整高度 */
+    }
+
+    audio::-webkit-media-controls-current-time-display,
+    audio::-webkit-media-controls-time-remaining-display {
+      color: var(--text-color);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    audio::-webkit-media-controls-overflow-button {
+      display: none !important;
     }
 
     .footer {
-      text-align: center;
-      margin-top: 20px;
+      margin-top: var(--padding);
       font-size: 14px;
-      color: #ffa6d5;
+      color: var(--text-secondary);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
 
     .carousel-btns, .back-btn {
       display: flex;
       justify-content: space-between;
-      margin-top: 10px;
+      margin-top: 20px; /* 增加间距 */
     }
 
-    .carousel-btns button, .back-btn button {
-      background: linear-gradient(145deg, rgb(156, 230, 241), #fbc0d9);
+    .carousel-btns button, .back-btn button, .random-btn {
+      background: var(--gradient);
       border: none;
-      color: #fff;
-      padding: 12px 20px;
-      font-size: 18px;
+      color: #1a1a1a; /* 按钮文字颜色更深 */
+      padding: 12px 25px; /* 增加内边距 */
+      font-size: 16px;
       cursor: pointer;
-      border-radius: 30px;
-      transition: all 0.3s ease;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 30px; /* 更圆润的边角 */
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
-    .carousel-btns button:hover, .back-btn button:hover {
-      background: linear-gradient(145deg, rgb(251, 192, 217), #9ce6f1);
-      transform: translateY(-4px);
-      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+    .carousel-btns button:hover, .back-btn button:hover, .random-btn:hover {
+      background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+      transform: translateY(-3px); /* 悬停时轻微上浮更多 */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     }
 
-    .carousel-btns button:active, .back-btn button:active {
-      transform: translateY(2px);
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .audio-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: 10px;
+    .carousel-btns button:active, .back-btn button:active, .random-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
     .hidden {
       display: none;
+    }
+
+    /* 改进焦点状态 */
+    *:focus-visible {
+      outline: 3px solid var(--secondary-color); /* 更明显的焦点轮廓 */
+      outline-offset: 4px;
+      border-radius: var(--radius);
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --padding: 15px;
+        --radius: 10px;
+      }
+
+      .container {
+        width: 95%;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      .album-carousel {
+        height: 320px;
+      }
+
+      .album-details {
+        min-height: 320px;
+      }
+
+      .album-header img, .album-carousel img {
+        height: 180px;
+      }
+
+      .album-header .song-name {
+        font-size: 20px;
+        margin-top: 15px;
+      }
+
+      .carousel-item {
+        margin: 0 15px;
+        padding: 12px;
+      }
+
+      .song-name {
+        font-size: 14px;
+      }
+
+      .track-list {
+        max-height: 220px;
+      }
+
+      .track-item {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .track-item .track-number {
+        font-size: 14px;
+        width: 30px;
+      }
+
+      .track-item .track-name, .track-item .track-duration {
+        font-size: 13px;
+      }
+
+      .current-track {
+        font-size: 16px;
+      }
+
+      .carousel-btns button, .back-btn button, .random-btn {
+        padding: 10px 18px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --padding: 10px;
+        --radius: 8px;
+      }
+
+      .container {
+        width: 98%;
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+      }
+
+      .album-carousel {
+        height: 280px;
+      }
+
+      .album-details {
+        min-height: 280px;
+      }
+
+      .album-header img, .album-carousel img {
+        height: 150px;
+      }
+
+      .album-header .song-name {
+        font-size: 18px;
+        margin-top: 10px;
+      }
+
+      .carousel-item {
+        margin: 0 10px;
+        padding: 8px;
+      }
+
+      .song-name {
+        font-size: 13px;
+      }
+
+      .track-list {
+        max-height: 180px;
+      }
+
+      .track-item {
+        padding: 8px 10px;
+        font-size: 13px;
+        margin: 6px 0;
+      }
+
+      .track-item .track-number {
+        font-size: 13px;
+        width: 25px;
+      }
+
+      .track-item .track-name, .track-item .track-duration {
+        font-size: 12px;
+      }
+
+      .current-track {
+        font-size: 14px;
+      }
+
+      .carousel-btns button, .back-btn button, .random-btn {
+        padding: 8px 15px;
+        font-size: 13px;
+        border-radius: 25px;
+      }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>我的音乐世界</h1>
+  <h1>GEMIROSE MUSIC WORLD</h1>
 
-  <div class="album-carousel">
+  <div class="album-carousel" role="region" aria-label="专辑轮播">
     <div class="carousel-inner">
       <div class="carousel-item" data-album="Pink Venom">
-        <img src="pink venom.jpg" alt="Pink Venom" data-src="Pink Venom.mp3">
+        <img src="pink venom.jpg" alt="Pink Venom 专辑封面" data-src="Pink Venom.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">Pink Venom</div>
       </div>
       <div class="carousel-item" data-album="BORN PINK">
-        <img src="bornpink.jpg" alt="BORN PINK" data-src="Shut Down.mp3">
+        <img src="bornpink.jpg" alt="BORN PINK 专辑封面" data-src="Shut Down.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">BORN PINK</div>
       </div>
       <div class="carousel-item" data-album="THE ALBUM">
-        <img src="how you like that.jpg" alt="THE ALBUM" data-src="How You Like That.mp3">
+        <img src="how you like that.jpg" alt="THE ALBUM 专辑封面" data-src="How You Like That.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">THE ALBUM</div>
       </div>
       <div class="carousel-item" data-album="The Girls">
-        <img src="the girls.jpg" alt="The Girls" data-src="THE GIRLS (BLACKPINK THE GAME OST).mp3">
+        <img src="the girls.jpg" alt="The Girls 专辑封面" data-src="THE GIRLS (BLACKPINK THE GAME OST).mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">The Girls</div>
       </div>
       <div class="carousel-item" data-album="AMORTAGE">
-        <img src="秀.jpg" alt="AMORTAGE" data-src="earthquake.mp3">
+        <img src="秀.jpg" alt="AMORTAGE 专辑封面" data-src="earthquake.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">AMORTAGE</div>
       </div>
       <div class="carousel-item" data-album="RUBY">
-        <img src="妮1.jpg" alt="RUBY" data-src="Mantra (Explicit).mp3">
+        <img src="妮1.jpg" alt="RUBY 专辑封面" data-src="Mantra (Explicit).mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">RUBY</div>
       </div>
       <div class="carousel-item" data-album="like JENNIE">
-        <img src="妮2.jpg" alt="like JENNIE" data-src="like JENNIE (Explicit).mp3">
+        <img src="妮2.jpg" alt="like JENNIE 专辑封面" data-src="like JENNIE (Explicit).mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">Like JENNIE (Explicit)</div>
       </div>
       <div class="carousel-item" data-album="ROSIE">
-        <img src="肉1.jpg" alt="ROSIE" data-src="Toxic till the end.mp3">
+        <img src="肉1.jpg" alt="ROSIE 专辑封面" data-src="toxic till the end.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">ROSIE</div>
       </div>
-      <div class="carousel-item" data-album="ROSIE2">
-        <img src="肉2.jpg" alt="ROSIE2" data-src="gameboy.mp3">
-        <div class="song-name">ROSIE2</div>
-      </div>
-      <div class="carousel-item" data-album="ROSIE3">
-        <img src="肉3.jpg" alt="ROSIE3" data-src="drinks or coffee.mp3">
-        <div class="song-name">ROSIE3</div>
-      </div>
       <div class="carousel-item" data-album="Number One Girl">
-        <img src="NOG.jpg" alt="Number One Girl" data-src="number one girl.mp3">
+        <img src="NOG.jpg" alt="Number One Girl 专辑封面" data-src="number one girl.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">Number One Girl</div>
       </div>
       <div class="carousel-item" data-album="Rockstar">
-        <img src="莎2.jpg" alt="Rockstar" data-src="Rockstar.mp3">
+        <img src="莎2.jpg" alt="Rockstar 专辑封面" data-src="Rockstar.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">Rockstar</div>
       </div>
       <div class="carousel-item" data-album="ALTER EGO">
-        <img src="莎1.jpg" alt="ALTER EGO" data-src="Thunder.mp3">
+        <img src="莎1.jpg" alt="ALTER EGO 专辑封面" data-src="Thunder.mp3" onerror="this.src='fallback.jpg'" loading="lazy">
         <div class="song-name">ALTER EGO</div>
       </div>
     </div>
@@ -241,23 +562,25 @@
 
   <div class="album-details hidden">
     <div class="album-header">
-      <img id="albumImage" src="" alt="">
+      <img id="albumImage" src="" alt="专辑封面" loading="lazy">
       <div class="song-name" id="albumTitle"></div>
     </div>
     <div class="track-list" id="trackList"></div>
   </div>
 
   <div class="carousel-btns">
-    <button id="prevBtn">◀</button>
-    <button id="nextBtn">▶</button>
+    <button id="prevBtn" aria-label="上一张专辑">◀</button>
+    <button id="randomBtn" class="random-btn" aria-label="随机播放">随机</button>
+    <button id="nextBtn" aria-label="下一张专辑">▶</button>
   </div>
 
   <div class="back-btn hidden">
-    <button id="backBtn">Back</button>
+    <button id="backBtn" aria-label="返回轮播">返回</button>
   </div>
 
   <div class="audio-container">
-    <audio id="audioPlayer" controls>
+    <div class="current-track" id="currentTrack">未选择歌曲</div>
+    <audio id="audioPlayer" controls controlsList="nodownload" title="音乐播放器">
       <source id="audioSource" src="" type="audio/mpeg">
       您的浏览器不支持音频元素。
     </audio>
@@ -269,37 +592,41 @@
 </div>
 
 <script>
-  const albumImages = document.querySelectorAll('.album-carousel img');
-  const audioPlayer = document.getElementById('audioPlayer');
-  const audioSource = document.getElementById('audioSource');
-  const carouselInner = document.querySelector('.carousel-inner');
-  const albumCarousel = document.querySelector('.album-carousel');
-  const albumDetails = document.querySelector('.album-details');
-  const trackList = document.getElementById('trackList');
-  const albumImage = document.getElementById('albumImage');
-  const albumTitle = document.getElementById('albumTitle');
-  const carouselBtns = document.querySelector('.carousel-btns');
-  const backBtn = document.getElementById('backBtn');
-  const backBtnContainer = document.querySelector('.back-btn');
-  const totalAlbums = albumImages.length;
-  let currentIndex = 0;
+  const elements = {
+    carouselInner: document.querySelector('.carousel-inner'),
+    albumCarousel: document.querySelector('.album-carousel'),
+    albumDetails: document.querySelector('.album-details'),
+    trackList: document.getElementById('trackList'),
+    albumImage: document.getElementById('albumImage'),
+    albumTitle: document.getElementById('albumTitle'),
+    carouselBtns: document.querySelector('.carousel-btns'),
+    backBtnContainer: document.querySelector('.back-btn'),
+    currentTrackDisplay: document.getElementById('currentTrack'),
+    audioPlayer: document.getElementById('audioPlayer'),
+    audioSource: document.getElementById('audioSource'),
+    prevBtn: document.getElementById('prevBtn'),
+    nextBtn: document.getElementById('nextBtn'),
+    backBtn: document.getElementById('backBtn'),
+    randomBtn: document.getElementById('randomBtn')
+  };
 
-  // Album track data
   const albumTracks = {
     'like JENNIE': [
       { name: 'like JENNIE (Explicit)', src: 'like JENNIE (Explicit).mp3', duration: '2:03' },
       { name: 'like JENNIE (Peggy Gou Remix)', src: 'like JENNIE (Peggy Gou Remix).mp3', duration: '3:28' },
-      { name: 'like JENNIE (Peggy Gou Remix - EXTENDED MIX | Explicit)', src: 'like JENNIE (Peggy Gou Remix - EXTENDED MIX | Explicit).mp3', duration: '5:07' }
+      { name: 'like JENNIE (Peggy Gou Remix - EXTENDED MIX | Explicit)', src: 'like JENNIE (Peggy Gou Remix - EXTENDED MIX | Explicit).mpM3', duration: '5:07' }
     ],
     'Pink Venom': [{ name: 'Pink Venom', src: 'Pink Venom.mp3', duration: '3:06' }],
-    'BORN PINK': [{ name: 'Pink Venom', src: 'Pink Venom.mp3', duration: '3:06' },
+    'BORN PINK': [
+      { name: 'Pink Venom', src: 'Pink Venom.mp3', duration: '3:06' },
       { name: 'Shut Down', src: 'Shut Down.mp3', duration: '2:55' },
       { name: 'Typa Girl (Explicit ver.)', src: 'Typa Girl (Explicit ver.).mp3', duration: '2:59' },
       { name: 'Yeah Yeah Yeah', src: 'Yeah Yeah Yeah.mp3', duration: '2:58' },
       { name: 'Hard to Love (Explicit ver.)', src: 'Hard to Love (Explicit ver.).mp3', duration: '2:42' },
       { name: 'The Happiest Girl', src: 'The Happiest Girl.mp3', duration: '3:42' },
       { name: 'Tally (Explicit ver.)', src: 'Tally (Explicit ver.).mp3', duration: '3:04' },
-      { name: 'Ready For Love', src: 'Ready For Love.mp3', duration: '3:04' },],
+      { name: 'Ready For Love', src: 'Ready For Love.mp3', duration: '3:04' },
+    ],
     'THE ALBUM': [
       { name: 'How You Like That', src: 'How You Like That.mp3', duration: '3:00' },
       { name: 'Ice Cream (with Selena Gomez)', src: 'Ice Cream (with Selena Gomez).mp3', duration: '2:55' },
@@ -308,7 +635,8 @@
       { name: 'Lovesick Girls', src: 'Lovesick Girls.mp3', duration: '3:12' },
       { name: 'Crazy Over You', src: 'Crazy Over You.mp3', duration: '2:41' },
       { name: 'Love To Hate Me', src: 'Love To Hate Me.mp3', duration: '2:49' },
-      { name: 'You Never Know', src: 'You Never Know.mp3', duration: '3:49' },],
+      { name: 'You Never Know', src: 'You Never Know.mp3', duration: '3:49' },
+    ],
     'The Girls': [{ name: 'The Girls', src: 'THE GIRLS (BLACKPINK THE GAME OST).mp3', duration: '2:43' }],
     'AMORTAGE': [
       { name: 'Earthquake', src: 'earthquake.mp3', duration: '3:00' },
@@ -347,34 +675,6 @@
       { name: 'too bad for us', src: 'too bad for us.mp3', duration: '3:56' },
       { name: 'dance all night', src: 'dance all night.mp3', duration: '3:34' },
     ],
-    'ROSIE2': [
-      { name: 'number one girl', src: 'number one girl.mp3', duration: '3:36' },
-      { name: '3am', src: '3am.mp3', duration: '2:34' },
-      { name: 'two years', src: 'two years.mp3', duration: '2:47' },
-      { name: 'toxic till the end', src: 'toxic till the end.mp3', duration: '2:36' },
-      { name: 'drinks or coffee', src: 'drinks or coffee.mp3', duration: '2:13' },
-      { name: 'APT.', src: 'APT..mp3', duration: '2:49'},
-      { name: 'gameboy', src: 'gameboy.mp3', duration: '2:46' },
-      { name: 'stay a little longer', src: 'stay a little longer.mp3', duration: '4:06' },
-      { name: 'not the same', src: 'not the same.mp3', duration: '3:04' },
-      { name: 'call it the end', src: 'call it the end.mp3', duration: '2:21' },
-      { name: 'too bad for us', src: 'too bad for us.mp3', duration: '3:56' },
-      { name: 'dance all night', src: 'dance all night.mp3', duration: '3:34' },
-    ],
-    'ROSIE3': [
-      { name: 'number one girl', src: 'number one girl.mp3', duration: '3:36' },
-      { name: '3am', src: '3am.mp3', duration: '2:34' },
-      { name: 'two years', src: 'two years.mp3', duration: '2:47' },
-      { name: 'toxic till the end', src: 'toxic till the end.mp3', duration: '2:36' },
-      { name: 'drinks or coffee', src: 'drinks or coffee.mp3', duration: '2:13' },
-      { name: 'APT.', src: 'APT..mp3', duration: '2:49'},
-      { name: 'gameboy', src: 'gameboy.mp3', duration: '2:46' },
-      { name: 'stay a little longer', src: 'stay a little longer.mp3', duration: '4:06' },
-      { name: 'not the same', src: 'not the same.mp3', duration: '3:04' },
-      { name: 'call it the end', src: 'call it the end.mp3', duration: '2:21' },
-      { name: 'too bad for us', src: 'too bad for us.mp3', duration: '3:56' },
-      { name: 'dance all night', src: 'dance all night.mp3', duration: '3:34' },
-    ],
     'Number One Girl': [{ name: 'Number One Girl', src: 'number one girl.mp3', duration: '3:36' }],
     'Rockstar': [{ name: 'Rockstar', src: 'Rockstar.mp3', duration: '3:05' }],
     'ALTER EGO': [
@@ -383,7 +683,7 @@
       { name: 'Elastigirl', src: 'Elastigirl.mp3', duration: '2:57' },
       { name: 'Thunder', src: 'Thunder.mp3', duration: '2:48' },
       { name: 'New Woman ft. ROSALÍA', src: 'New Woman ft. ROSALÍA.mp3', duration: '2:59' },
-      { name: 'FXCK UP THE WORLD ft. Future', src: 'FXCK UP THE WORLD ft. Future.mp3', duration: '3:04'},
+      { name: 'FXCK UP THE WORLD ft. Future', src: 'FXCK UP THE WORLD (vixi solo version|Explicit).mp3', duration: '3:04'},
       { name: 'Rapunzel ft. Megan Thee Stallion (Explicit)', src: 'Rapunzel ft. Megan Thee Stallion (Explicit).mp3', duration: '2:45' },
       { name: 'Moonlit Floor (Kiss Me)', src: 'Moonlit Floor (Kiss Me).mp3', duration: '2:35' },
       { name: 'When I\'m With You ft. Tyla', src: 'When I\'m With You ft. Tyla.mp3', duration: '2:52' },
@@ -396,60 +696,220 @@
     ]
   };
 
-  albumImages.forEach(image => {
-    image.addEventListener('click', () => {
-      const albumName = image.parentElement.getAttribute('data-album');
-      showAlbumDetails(albumName, image.src);
-    });
+  let currentIndex = 0;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const totalAlbums = document.querySelectorAll('.carousel-item').length;
+
+  // 事件委托处理专辑点击和键盘事件
+  elements.carouselInner.addEventListener('click', (e) => {
+    const item = e.target.closest('.carousel-item');
+    if (item) {
+      const albumName = item.getAttribute('data-album');
+      const imgSrc = item.querySelector('img').src;
+      showAlbumDetails(albumName, imgSrc);
+    }
   });
 
-  document.getElementById('prevBtn').addEventListener('click', () => {
+  elements.carouselInner.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const item = e.target.closest('.carousel-item');
+      if (item) {
+        const albumName = item.getAttribute('data-album');
+        const imgSrc = item.querySelector('img').src;
+        showAlbumDetails(albumName, imgSrc);
+      }
+    }
+  });
+
+  // 轮播按钮事件
+  elements.prevBtn.addEventListener('click', () => {
     currentIndex = (currentIndex === 0) ? totalAlbums - 1 : currentIndex - 1;
     updateCarousel();
   });
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
+  elements.nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex === totalAlbums - 1) ? 0 : currentIndex + 1;
     updateCarousel();
   });
 
-  backBtn.addEventListener('click', () => {
-    albumDetails.classList.add('hidden');
-    albumCarousel.classList.remove('hidden');
-    carouselBtns.classList.remove('hidden');
-    backBtnContainer.classList.add('hidden');
+  // 随机播放
+  elements.randomBtn.addEventListener('click', () => {
+    const albums = Object.keys(albumTracks);
+    const randomAlbumName = albums[Math.floor(Math.random() * albums.length)];
+    const tracks = albumTracks[randomAlbumName];
+    const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
+
+    elements.audioSource.src = randomTrack.src;
+    elements.audioPlayer.load();
+    elements.audioPlayer.play().catch(() => {
+      elements.currentTrackDisplay.textContent = '播放歌曲失败';
+    });
+    // 更新当前播放歌曲的显示
+    elements.currentTrackDisplay.textContent = randomTrack.name;
+
+    // 找到对应专辑的图片路径并显示专辑详情
+    const albumItem = document.querySelector(`[data-album="${randomAlbumName}"]`);
+    if (albumItem) {
+      const imgSrc = albumItem.querySelector('img').src;
+      showAlbumDetails(randomAlbumName, imgSrc);
+    } else {
+      // 如果没有找到对应的专辑项，可以考虑显示一个默认图片或处理错误
+      showAlbumDetails(randomAlbumName, 'fallback.jpg'); // 假设有一个默认图片
+    }
+
+    // 确保当前播放的歌曲在列表中被高亮（如果当前显示的是随机播放的专辑）
+    const trackItems = elements.trackList.querySelectorAll('.track-item');
+    trackItems.forEach(item => item.classList.remove('playing'));
+    const playingTrackItem = Array.from(trackItems).find(item => item.querySelector('.track-name').textContent === randomTrack.name);
+    if (playingTrackItem) {
+      playingTrackItem.classList.add('playing');
+    }
   });
 
-  function updateCarousel() {
-    const offset = -currentIndex * 220;
-    carouselInner.style.transform = `translateX(${offset}px)`;
-  }
+  // 返回按钮
+  elements.backBtn.addEventListener('click', () => {
+    elements.albumDetails.classList.add('hidden');
+    elements.albumCarousel.classList.remove('hidden');
+    elements.carouselBtns.classList.remove('hidden');
+    elements.backBtnContainer.classList.add('hidden');
+    elements.audioPlayer.pause();
+    elements.audioSource.src = '';
+    elements.currentTrackDisplay.textContent = '未选择歌曲';
+  });
 
-  function showAlbumDetails(albumName, imgSrc) {
-    albumCarousel.classList.add('hidden');
-    carouselBtns.classList.add('hidden');
-    albumDetails.classList.remove('hidden');
-    backBtnContainer.classList.remove('hidden');
+  // 音频事件
+  elements.audioPlayer.addEventListener('loadstart', () => {
+    // 当音频开始加载时，可以不立即清空，而是保持当前显示，直到真正播放或加载失败
+  });
 
-    albumImage.src = imgSrc;
-    albumTitle.textContent = albumName;
-    trackList.innerHTML = '';
+  elements.audioPlayer.addEventListener('error', () => {
+    elements.currentTrackDisplay.textContent = '加载歌曲失败，请检查网络或文件路径';
+  });
 
-    const tracks = albumTracks[albumName] || [];
-    tracks.forEach(track => {
-      const trackItem = document.createElement('div');
-      trackItem.classList.add('track-item');
-      trackItem.textContent = `${track.name} (${track.duration})`;
-      trackItem.addEventListener('click', () => {
-        audioSource.src = track.src;
-        audioPlayer.load();
-        audioPlayer.play();
-      });
-      trackList.appendChild(trackItem);
+  elements.audioPlayer.addEventListener('loadeddata', () => {
+    // 当音频数据加载完毕，如果不是随机播放导致显示，则保持当前显示
+    // 否则，如果通过点击歌曲列表播放，则会更新
+    const playingTrackElement = elements.trackList.querySelector('.playing .track-name');
+    if (playingTrackElement) {
+      elements.currentTrackDisplay.textContent = playingTrackElement.textContent;
+    }
+  });
+
+  elements.audioPlayer.addEventListener('ended', () => {
+    const currentTrack = elements.trackList.querySelector('.playing');
+    const tracks = elements.trackList.querySelectorAll('.track-item');
+    const currentIndex = Array.from(tracks).indexOf(currentTrack);
+    if (currentIndex < tracks.length - 1) {
+      tracks[currentIndex + 1].click();
+    } else {
+      elements.audioPlayer.pause();
+      elements.currentTrackDisplay.textContent = '播放列表已结束';
+    }
+  });
+
+  // 触摸滑动
+  elements.carouselInner.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  elements.carouselInner.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const threshold = 50;
+    if (touchStartX - touchEndX > threshold) {
+      currentIndex = (currentIndex === totalAlbums - 1) ? 0 : currentIndex + 1;
+      updateCarousel();
+    }
+    if (touchEndX - touchStartX > threshold) {
+      currentIndex = (currentIndex === 0) ? totalAlbums - 1 : currentIndex - 1;
+      updateCarousel();
+    }
+  });
+
+  // 动态更新曲目时长
+  function updateTrackDuration(trackItem, trackSrc) {
+    const tempAudio = new Audio(trackSrc);
+    tempAudio.addEventListener('loadedmetadata', () => {
+      const duration = Math.floor(tempAudio.duration);
+      const minutes = Math.floor(duration / 60);
+      const seconds = duration % 60;
+      trackItem.querySelector('.track-duration').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    });
+    tempAudio.addEventListener('error', () => {
+      trackItem.querySelector('.track-duration').textContent = '未知';
     });
   }
 
+  // 更新轮播
+  function updateCarousel() {
+    // 获取第一个轮播项的宽度和其左右margin，以确保计算准确
+    const firstItem = elements.carouselInner.querySelector('.carousel-item');
+    if (firstItem) {
+      const itemWidth = firstItem.offsetWidth;
+      const itemMarginLeft = parseFloat(getComputedStyle(firstItem).marginLeft);
+      const itemMarginRight = parseFloat(getComputedStyle(firstItem).marginRight);
+      const totalItemWidth = itemWidth + itemMarginLeft + itemMarginRight;
+      const offset = -currentIndex * totalItemWidth;
+      elements.carouselInner.style.transform = `translateX(${offset}px)`;
+    }
+  }
+
+  // 初始化时调用一次，确保布局正确
   updateCarousel();
+
+  // 监听窗口大小变化，重新计算轮播位置
+  window.addEventListener('resize', updateCarousel);
+
+
+  // 显示专辑详情
+  function showAlbumDetails(albumName, imgSrc) {
+    elements.albumCarousel.classList.add('hidden');
+    elements.carouselBtns.classList.add('hidden');
+    elements.albumDetails.classList.remove('hidden');
+    elements.backBtnContainer.classList.remove('hidden');
+
+    elements.albumImage.src = imgSrc;
+    elements.albumImage.alt = `${albumName} 专辑封面`;
+    elements.albumTitle.textContent = albumName;
+    elements.trackList.innerHTML = '';
+
+    const tracks = albumTracks[albumName] || [];
+    if (tracks.length === 0) {
+      elements.trackList.innerHTML = '<p>此专辑暂无歌曲。</p>';
+      return;
+    }
+
+    tracks.forEach((track, index) => {
+      const trackItem = document.createElement('div');
+      trackItem.classList.add('track-item');
+      trackItem.innerHTML = `
+        <span class="track-number">${index + 1}</span>
+        <span class="track-name">${track.name}</span>
+        <span class="track-duration">${track.duration}</span>
+      `;
+      trackItem.setAttribute('tabindex', '0');
+      trackItem.setAttribute('role', 'button');
+      trackItem.setAttribute('aria-label', `播放 ${track.name}`);
+      updateTrackDuration(trackItem, track.src);
+      trackItem.addEventListener('click', () => {
+        elements.trackList.querySelectorAll('.track-item').forEach(item => item.classList.remove('playing'));
+        trackItem.classList.add('playing');
+        elements.audioSource.src = track.src;
+        elements.audioPlayer.load();
+        elements.audioPlayer.play().catch(() => {
+          elements.currentTrackDisplay.textContent = '播放歌曲失败';
+        });
+        elements.currentTrackDisplay.textContent = track.name;
+      });
+      trackItem.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          trackItem.click();
+        }
+      });
+      elements.trackList.appendChild(trackItem);
+    });
+  }
+
 </script>
 
 </body>
