@@ -47,7 +47,6 @@
       max-width: 960px; /* 增加最大宽度 */
       text-align: center;
       box-sizing: border-box; /* 包含内边距和边框在宽度内 */
-      /* border: 1px solid rgba(255, 255, 255, 0.08); /* 容器边框 - 移除 */ */
     }
 
     h1 {
@@ -79,8 +78,7 @@
       border-radius: var(--radius);
       padding: var(--padding);
       animation: fadeIn 0.6s ease-out; /* 动画稍慢 */
-      /* border: 1px solid rgba(255,255,255,0.15); /* 专辑详情边框更明显 - 移除 */ */
-    box-shadow: var(--shadow);
+      box-shadow: var(--shadow);
     }
 
     @keyframes fadeIn {
@@ -101,7 +99,6 @@
       border-radius: var(--radius);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* 专辑封面阴影更深 */
       transition: transform 0.4s ease, opacity 0.4s ease;
-      /* border: 2px solid rgba(255, 255, 255, 0.1); /* 专辑封面边框 - 移除 */ */
     }
 
     .album-header img:hover {
@@ -139,7 +136,6 @@
       background-color: rgba(255,255,255,0.05); /* 轻微背景色更明显 */
       box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 轻微阴影更明显 */
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      /* border: 1px solid rgba(255,255,255,0.05); /* 轮播项边框 - 移除 */ */
     }
 
     .carousel-item:hover {
@@ -171,8 +167,7 @@
       border-radius: var(--radius);
       overflow-y: auto;
       max-height: 280px; /* 增加最大高度 */
-      /* border: 1px solid rgba(255,255,255,0.15); /* 歌曲列表边框 - 移除 */ */
-    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
     .track-item {
@@ -245,18 +240,14 @@
       color: rgba(26,26,26,0.8);
     }
 
-    /* .track-item:not(:last-child) { /* 歌曲列表分割线 - 移除 */
-    /* border-bottom: 1px solid rgba(255, 255, 255, 0.18); */
-    /* } */
-
     .audio-container {
       width: 100%;
       padding: 20px;
-      background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.4)); /* 播放器背景渐变透明度调整 */
+      /* 播放器背景渐变透明度调整 */
+      background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.4));
       border-radius: var(--radius);
       margin-top: var(--padding);
       box-shadow: var(--shadow);
-      /* border: 1px solid rgba(255, 255, 255, 0.1); /* 播放器边框 - 移除 */ */
     }
 
     .current-track {
@@ -269,49 +260,6 @@
 
     audio {
       width: 100%;
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.15); /* 播放器轨道背景更明显 */
-      border: none;
-      outline: none;
-    }
-
-    audio::-webkit-media-controls-panel {
-      background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.5)); /* 播放器控制面板背景透明度调整 */
-      border-radius: var(--radius);
-      padding: 10px; /* 增加内边距 */
-      /* border: 1px solid transparent; /* 移除 */ */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-
-    audio::-webkit-media-controls-play-button {
-      background: var(--gradient);
-      border-radius: 50%;
-      padding: 10px;
-      transition: background 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-    }
-
-    audio::-webkit-media-controls-play-button:hover {
-      background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
-      transform: scale(1.1); /* 悬停时放大更多 */
-    }
-
-    audio::-webkit-media-controls-volume-slider,
-    audio::-webkit-media-controls-timeline {
-      background: rgba(255,255,255,0.3); /* 进度条和音量条背景更明显 */
-      border-radius: 8px; /* 更大的圆角 */
-      height: 8px; /* 调整高度 */
-    }
-
-    audio::-webkit-media-controls-current-time-display,
-    audio::-webkit-media-controls-time-remaining-display {
-      color: var(--text-color);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    audio::-webkit-media-controls-overflow-button {
-      display: none !important;
     }
 
     .footer {
@@ -412,6 +360,7 @@
       .track-item {
         padding: 10px 12px;
         font-size: 14px;
+        margin: 6px 0;
       }
 
       .track-item .track-number {
@@ -580,7 +529,7 @@
 
   <div class="audio-container">
     <div class="current-track" id="currentTrack">未选择歌曲</div>
-    <audio id="audioPlayer" controls controlsList="nodownload" title="音乐播放器">
+    <audio id="audioPlayer" controls title="音乐播放器">
       <source id="audioSource" src="" type="audio/mpeg">
       您的浏览器不支持音频元素。
     </audio>
@@ -700,6 +649,8 @@
   let touchStartX = 0;
   let touchEndX = 0;
   const totalAlbums = document.querySelectorAll('.carousel-item').length;
+  // 添加一个全局变量来存储上次播放的歌曲名称
+  let lastPlayedTrackName = '未选择歌曲'; // 初始化为默认文本
 
   // 事件委托处理专辑点击和键盘事件
   elements.carouselInner.addEventListener('click', (e) => {
@@ -747,6 +698,7 @@
     });
     // 更新当前播放歌曲的显示
     elements.currentTrackDisplay.textContent = randomTrack.name;
+    lastPlayedTrackName = randomTrack.name; // 存储随机播放的歌曲名称
 
     // 找到对应专辑的图片路径并显示专辑详情
     const albumItem = document.querySelector(`[data-album="${randomAlbumName}"]`);
@@ -773,9 +725,10 @@
     elements.albumCarousel.classList.remove('hidden');
     elements.carouselBtns.classList.remove('hidden');
     elements.backBtnContainer.classList.add('hidden');
-    elements.audioPlayer.pause();
-    elements.audioSource.src = '';
-    elements.currentTrackDisplay.textContent = '未选择歌曲';
+    // 如果希望音乐继续播放，则不要暂停或清除音频源
+    // elements.audioPlayer.pause(); // 如果希望音乐暂停，保留此行
+    // elements.audioSource.src = ''; // 如果希望清除音频源，保留此行
+    elements.currentTrackDisplay.textContent = lastPlayedTrackName; // 恢复上次播放的歌曲名称
   });
 
   // 音频事件
@@ -793,6 +746,15 @@
     const playingTrackElement = elements.trackList.querySelector('.playing .track-name');
     if (playingTrackElement) {
       elements.currentTrackDisplay.textContent = playingTrackElement.textContent;
+      lastPlayedTrackName = playingTrackElement.textContent; // 确保加载数据时也更新此变量
+    } else if (elements.audioSource.src && elements.audioPlayer.duration > 0) {
+      // 备用方案：如果列表中没有突出显示的曲目但音频已加载
+      // 这可能发生在手动设置歌曲且未点击列表项的情况下
+      const trackNameFromSrc = elements.audioSource.src.split('/').pop().replace(/\.mp3$/, '');
+      elements.currentTrackDisplay.textContent = trackNameFromSrc;
+      lastPlayedTrackName = trackNameFromSrc;
+    } else {
+      elements.currentTrackDisplay.textContent = lastPlayedTrackName; // 如果没有新信息，则回退到上次已知信息
     }
   });
 
@@ -805,6 +767,7 @@
     } else {
       elements.audioPlayer.pause();
       elements.currentTrackDisplay.textContent = '播放列表已结束';
+      lastPlayedTrackName = '未选择歌曲'; // 如果播放列表结束，则重置
     }
   });
 
@@ -900,6 +863,7 @@
           elements.currentTrackDisplay.textContent = '播放歌曲失败';
         });
         elements.currentTrackDisplay.textContent = track.name;
+        lastPlayedTrackName = track.name; // 存储当前播放的歌曲名称
       });
       trackItem.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
