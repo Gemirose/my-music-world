@@ -18,22 +18,75 @@
       /* 渐变色 */
       --gradient: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
       /* 阴影效果 */
-      --shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* 更明显的阴影 */
+      --shadow: 0 8px 25px rgba(0, 0, 0, 0.5); /* 更柔和、更弥散的阴影 */
       /* 圆角 */
-      --radius: 12px; /* 更大的圆角 */
+      --radius: 18px; /* 更大的圆角，更符合Liquid Glass的柔和感 */
+      --card-radius: 18px; /* 卡片圆角 */
       /* 内边距 */
       --padding: 20px; /* 增加内边距 */
 
-      /* 新增一个变量用于按钮的基础背景色，通常是比容器略浅或略深的颜色 */
-      --button-background: #3a3a3a; /* 略浅于 background-dark */
+      /* 按钮基础背景色 */
+      --button-background: #3a3a3a;
       --button-hover-background: #4a4a4a;
       --button-active-background: #2a2a2a;
-      --button-text-color: var(--primary-color); /* 按钮图标颜色 */
+      --button-text-color: var(--primary-color);
+
+      /* 液态玻璃按钮特定变量 */
+      --button-glass-bg: rgba(255, 255, 255, 0.1);
+      --button-glass-border-color: rgba(255, 255, 255, 0.5);
+      --button-glass-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --button-glass-inset-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      --button-glass-radius: 20px; /* 新增：按钮圆角 */
+      --button-shine-bg: rgba(255, 255, 255, 0.05);
+      --button-shine-shadow-1: inset -5px -4px 0px -5.5px rgba(255, 255, 255, 0.7);
+      --button-shine-shadow-2: inset 0px -4.5px 0px -4px rgba(255, 255, 255, 0.7);
+      --button-shine-opacity: 0.6;
+
+      --button-hover-bg: rgba(255, 255, 255, 0.2);
+      --button-hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      --button-active-bg: rgba(255, 255, 255, 0.05);
+      --button-active-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+
+      /* Advanced Apple Liquid Glass Effect Variables */
+      --liquid-bg-color: 255, 255, 255; /* Base color for glass, for easier rgba() usage */
+      --liquid-bg-opacity: 0; /* 稍微增加一点点背景可见度，或者根据喜好减少 */
+      --liquid-bg: rgba(var(--liquid-bg-color), var(--liquid-bg-opacity));
+      --liquid-blur: 25px; /* 大幅减少模糊半径以提升性能 */
+      --liquid-saturate: 110%; /* 稍微降低饱和度，让其更柔和 */
+      --liquid-brightness: 110%; /* 稍微降低亮度 */
+      --liquid-border-color: rgba(var(--liquid-bg-color), 0.15);
+      --liquid-border: 1px solid var(--liquid-border-color);
+      --liquid-shadow-color: 0, 0, 0;
+      --liquid-shadow-strong: 0 15px 45px rgba(var(--liquid-shadow-color), 0.25);
+      --liquid-shadow-soft: 0 2px 10px rgba(var(--liquid-shadow-color), 0.15);
+      --liquid-shadow: var(--liquid-shadow-strong), var(--liquid-shadow-soft);
+      --liquid-inner-shadow: inset 0 1px 2px rgba(var(--liquid-bg-color), 0.1), inset 0 -1px 1px rgba(var(--liquid-shadow-color), 0.05);
+
+      --liquid-shine-opacity: 0.6; /* 降低高光透明度，使其更微妙 */
+      --liquid-shine-blur: 4px; /* 减少高光模糊，使其更清晰，同时提升性能 */
+      /* 尝试简化高光效果，如果依然卡顿，可以暂时注释掉一个 */
+      --liquid-shine-highlight-1: radial-gradient(ellipse 60% 30% at 20% 20%, rgba(var(--liquid-bg-color), 0.3) 0%, rgba(var(--liquid-bg-color), 0) 100%); /* 调整高光强度和位置 */
+      --liquid-shine-highlight-2: radial-gradient(ellipse 50% 25% at 80% 80%, rgba(var(--liquid-bg-color), 0.15) 0%, rgba(var(--liquid-bg-color), 0) 100%); /* 调整高光强度和位置 */
+      --liquid-shine-edge: linear-gradient(to bottom, rgba(var(--liquid-bg-color), 0.15) 0%, rgba(var(--liquid-bg-color), 0) 15%), linear-gradient(to top, rgba(var(--liquid-bg-color), 0.15) 0%, rgba(var(--liquid-bg-color), 0) 15%); /* Softer edge highlights */
+
+      --liquid-item-bg-opacity: 0.025;
+      --liquid-item-bg: rgba(var(--liquid-bg-color), var(--liquid-item-bg-opacity));
+      --liquid-item-border-color: rgba(var(--liquid-bg-color), 0.08);
+      --liquid-item-border: 1px solid var(--liquid-item-border-color);
+      --liquid-item-shadow: 0 2px 8px rgba(var(--liquid-shadow-color), 0.1); /* 更轻微的阴影 */
+      --liquid-item-blur: 5px; /* 大幅降低内部元素的模糊值 */
+      --liquid-item-saturate: 100%; /* 恢复到默认值 */
+      --liquid-item-brightness: 100%; /* 恢复到默认值 */
     }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 更改字体，更现代 */
-      background-color: #202020; /* 更深的背景色 */
+      background-color: #1a1a1d; /* 更深邃的背景 */
+      /* 添加背景图片以增强透明效果 */
+      background-image: url('https://source.unsplash.com/random/1920x1080?dark,abstract,gradient'); 
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* 固定背景，滚动时内容移动 */
       margin: 0;
       padding: 0;
       display: flex;
@@ -46,16 +99,55 @@
     }
 
     .container {
-      background-color: var(--background-dark);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      position: relative; /* For pseudo-element positioning */
+      /* background: var(--liquid-bg); -- Background will be handled by a pseudo-element for better blur */
+      border: var(--liquid-border);
+      border-radius: var(--radius); /* 使用更新后的 --radius */
+      box-shadow: var(--liquid-shadow), var(--liquid-inner-shadow);
       padding: var(--padding);
-      width: 100%; /* 适当增加宽度 */
-      max-width: 960px; /* 增加最大宽度 */
+      width: 100%;
+      max-width: 960px;
       text-align: center;
-      box-sizing: border-box; /* 包含内边距和边框在宽度内 */
-      margin: 20px auto; /* 垂直居中并提供上下间距 */
+      box-sizing: border-box;
+      margin: 20px auto;
+      z-index: 1;
+      overflow: hidden; /* Crucial for clipping oversized pseudo-elements */
+      /* transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* For potential subtle hover effects */
     }
+
+    /* Optional: Subtle perspective on hover for the container */
+    /*
+    body:hover .container {
+      transform: perspective(1000px) rotateX(1deg) rotateY(-1deg) scale(1.01);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3), var(--liquid-inner-shadow);
+    }
+    */
+
+    .container::before { /* Blurred background layer */
+      content: '';
+      position: absolute;
+      /* Make it slightly larger than the container to allow edge pixels to be part of the blur */
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      background: var(--liquid-bg);
+      backdrop-filter: blur(var(--liquid-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+      border-radius: calc(var(--radius) + 10px); /* Adjust radius to match oversized nature */
+      z-index: -1; /* Behind the content, but above body background */
+      pointer-events: none;
+    }
+
+    .container::after { /* Main shine layer, changed from ::before to ::after to stack on top of the new ::before */
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: var(--radius);
+      background: var(--liquid-shine-highlight-1), var(--liquid-shine-highlight-2), var(--liquid-shine-edge);
+      opacity: var(--liquid-shine-opacity);
+      z-index: 0; /* Above blurred background, below content */
+      pointer-events: none;
+      mix-blend-mode: overlay; /* Blend highlights softly */
+      filter: blur(var(--liquid-shine-blur)); /* Slightly reduced blur for sharper highlights */
+    }
+    /* Removed the second pseudo-element for shine, consolidated into ::before or rely on main bg + single shine */
 
     h1 {
       font-size: 32px; /* 标题更大 */
@@ -67,14 +159,27 @@
 
     .album-carousel, .album-details {
       position: relative;
-      width: 95.5%;
+      /* width: 95.5%; */ /* 暂时注释掉或调整，让padding来控制内部空间 */
+      width: 100%; /* 或者保持100%，让父级.container的padding生效 */
+      box-sizing: border-box; /* 确保padding和border包含在width内 */
+      margin-left: auto;
+      margin-right: auto;
       margin-bottom: 25px; /* 增加间距 */
+      border-radius: var(--card-radius);
+      background: var(--liquid-item-bg);
+      border: var(--liquid-item-border);
+      box-shadow: var(--liquid-item-shadow);
+      backdrop-filter: blur(var(--liquid-item-blur)); 
+      transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
     }
 
     .album-carousel {
       height: 400px; /* 增加轮播高度 */
       overflow: hidden;
       padding-top: 15px;
+      padding-left: 20px; /* 新增左边距 */
+      padding-right: 20px; /* 新增右边距，使其与左边对称 */
+      /* 如果 .album-carousel 的 width 设置为 100% 或 auto，确保其父容器 .container 有合适的左右 padding */
     }
 
     .album-details {
@@ -82,11 +187,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: var(--background-darker); /* 使用更深的背景变量 */
-      border-radius: var(--radius);
+      background: var(--liquid-item-bg); 
+      border: var(--liquid-item-border); 
+      border-radius: var(--card-radius);
       padding: var(--padding);
       animation: fadeIn 0.6s ease-out; /* 动画稍慢 */
-      box-shadow: var(--shadow);
+      box-shadow: var(--liquid-item-shadow); 
+      /* 简化 backdrop-filter */
+      backdrop-filter: blur(var(--liquid-item-blur)); 
     }
 
     @keyframes fadeIn {
@@ -104,7 +212,7 @@
     .album-header img {
       width: auto;
       height: 220px; /* 专辑封面稍大 */
-      border-radius: var(--radius);
+      border-radius: var(--card-radius); /* 统一使用卡片圆角 */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* 专辑封面阴影更深 */
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
@@ -124,12 +232,15 @@
 
     .carousel-inner {
       display: flex;
-      justify-content: center;
+      /* justify-content: center; */ /* 当使用绝对定位和transform时，这个可能不是主要居中方式 */
       transition: transform 0.8s ease-in-out;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      position: absolute; /* 保持绝对定位以便JS控制滑动 */
+      left: 0; /* 改动：从50%改为0，使其从父元素的左边开始 */
+      transform: translateX(0); /* 改动：调整transform，使其不进行水平偏移，或者设置为 none */
       padding: 10px 0; /* 增加垂直内边距 */
+      /* 确保 .carousel-inner 的宽度能够容纳所有 .carousel-item */
+      /* 如果需要，JS动态计算其宽度会更灵活 */
+      /* 或者，如果希望内容在可视区域内滚动，这里的宽度可能需要是所有item的总和 */
     }
 
     .carousel-item {
@@ -140,24 +251,25 @@
       text-align: center;
       cursor: pointer;
       padding: 15px; /* 增加内边距 */
-      border-radius: var(--radius);
-      background-color: rgba(255,255,255,0.05); /* 轻微背景色更明显 */
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 轻微阴影更明显 */
+      border-radius: var(--card-radius);
+      background-color: var(--liquid-item-bg);
+      border: var(--liquid-item-border);
+      box-shadow: var(--liquid-item-shadow);
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      /* 确保触摸目标足够大 */
       min-width: 200px; /* 设定最小宽度 */
+      backdrop-filter: blur(calc(var(--liquid-item-blur) * 0.8)) saturate(calc(var(--liquid-item-saturate) * 0.9)) brightness(var(--liquid-item-brightness));
     }
 
     .carousel-item:hover {
       transform: scale(1.08); /* 悬停时放大更多 */
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* 悬停时阴影更明显 */
-      background-color: rgba(255,255,255,0.1);
+      background-color: rgba(255,255,255,0.15); /* Brighter on hover */
     }
 
     .album-carousel img {
       width: auto;
       height: 220px; /* 轮播专辑封面稍大 */
-      border-radius: var(--radius);
+      border-radius: var(--card-radius); /* 统一使用卡片圆角 */
       object-fit: contain;
       loading: lazy;
       box-shadow: 0 4px 10px rgba(0,0,0,0.4);
@@ -173,11 +285,13 @@
     .track-list {
       width: 95.5%;
       padding: var(--padding);
-      background: rgba(255, 255, 255, 0.08); /* 歌曲列表背景更明显 */
-      border-radius: var(--radius);
+      background: var(--liquid-item-bg);
+      border: var(--liquid-item-border);
+      border-radius: var(--card-radius);
       overflow-y: auto;
       max-height: 280px; /* 增加最大高度 */
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      box-shadow: var(--liquid-item-shadow);
+      backdrop-filter: blur(var(--liquid-item-blur)) saturate(var(--liquid-item-saturate)) brightness(var(--liquid-item-brightness));
     }
 
     .track-item {
@@ -185,16 +299,18 @@
       align-items: center;
       padding: 12px 15px; /* 增加内边距 */
       margin: 10px 0; /* 增加上下间距 */
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px; /* 更圆润的边角 */
+      background: rgba(var(--liquid-bg-color), calc(var(--liquid-item-bg-opacity) * 1.2)); /* Slightly more opaque than parent items */
+      border-radius: calc(var(--card-radius) - 8px); /* Smaller radius for inset feel */
+      border: 1px solid rgba(var(--liquid-bg-color), 0.06);
       cursor: pointer;
       transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15); /* 轻微阴影更明显 */
+      box-shadow: 0 1px 4px rgba(var(--liquid-shadow-color), 0.08);
       min-height: 48px; /* 确保触摸目标大小 */
+      backdrop-filter: blur(calc(var(--liquid-item-blur) * 0.7)) saturate(calc(var(--liquid-item-saturate) * 0.8)) brightness(calc(var(--liquid-item-brightness) * 0.95));
     }
 
     .track-item:hover {
-      background: rgba(255, 255, 255, 0.2); /* 悬停背景更明显 */
+      background: rgba(255, 255, 255, 0.25); /* Brighter on hover */
       transform: translateY(-3px); /* 悬停时轻微上浮更多 */
       box-shadow: 0 5px 10px rgba(0,0,0,0.3);
     }
@@ -244,17 +360,29 @@
     }
 
     .audio-container {
-      width: 95.5%;
-      padding: 20px;
-      /* 播放器背景渐变透明度调整 */
-      background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.4));
-      border-radius: var(--radius);
+      /* width: 95.5%; */ /* 改动：注释或移除此行 */
+      width: 100%; /* 新增：确保撑满父容器的可用宽度 */
+      box-sizing: border-box; /* 新增：确保 padding 和 border 在 width 内 */
+      padding: 20px; /* 保留或根据需要调整 */
+      /* 播放器背景渐变透明度调整 - 原有背景将被液态玻璃效果取代或叠加 */
+      /* background: linear-gradient(145deg, #2a2a2a, rgba(251, 192, 217, 0.4)); */
+      
+      /* 应用液态玻璃效果 */
+      background: var(--liquid-item-bg); /* 使用项目背景色 */
+      border: var(--liquid-item-border); /* 使用项目边框 */
+      border-radius: var(--radius); /* 与容器一致的圆角 */
+      box-shadow: var(--liquid-item-shadow); /* 使用项目阴影 */
+      backdrop-filter: blur(var(--liquid-item-blur)) saturate(var(--liquid-item-saturate)) brightness(var(--liquid-item-brightness)); /* 应用背景模糊等效果 */
+      /* 如果需要更强的玻璃感，可以考虑添加类似 .container::after 的高光伪元素，但这会增加复杂性 */
+
       margin-top: var(--padding);
-      box-shadow: var(--shadow);
+      /* box-shadow: var(--shadow); -- 已被 --liquid-item-shadow 取代 */
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 15px; /* 控制元素之间的间距 */
+      position: relative; /* 添加 position: relative 以便未来可能添加的伪元素定位 */
+      z-index: 0; /* 确保在 .container 的伪元素之下，但高于普通背景 */
     }
 
     /* 隐藏原生 audio 元素 */
@@ -279,7 +407,10 @@
       align-items: center;
       gap: 20px; /* 按钮和进度条之间的间距 */
       width: 100%;
-      justify-content: center; /* 居中显示控件 */
+      /* justify-content: center; */ /* 如果希望两端对齐，可以考虑 space-between */
+      /* padding: 0 20px; */ /* 或者在这里添加左右padding来控制内部元素的边距 */
+      box-sizing: border-box; /* 确保padding在width内 */
+      justify-content: center; /* 保持居中，如果audio-container已对称，则整体也会对称 */
       flex-wrap: wrap; /* 小屏幕下允许换行 */
     }
 
@@ -344,7 +475,7 @@
     }
 
     /* 隐藏不活跃的图标 */
-    .inactive-icon {
+      .inactive-icon {
       display: none;
     }
 
@@ -500,46 +631,63 @@
     }
 
     .carousel-btns button, .back-btn button, .random-btn {
-      background: var(--button-background); /* 统一按钮背景色 */
-      border: none;
-      color: var(--button-text-color); /* 统一按钮文字/图标颜色 */
-      padding: 12px 25px; /* 增加内边距 */
+      position: relative; /* For pseudo-element */
+      background: var(--button-glass-bg);
+      backdrop-filter: blur(8px) saturate(150%);
+      border: 1px solid var(--button-glass-border-color);
+      color: var(--button-text-color);
+      padding: 12px 25px;
       font-size: 16px;
       cursor: pointer;
-      border-radius: 30px; /* 更圆润的边角 */
-      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+      border-radius: var(--button-glass-radius); /* Use glass button radius */
+      transition: all 0.3s ease;
       font-weight: 700;
       letter-spacing: 0.5px;
-      min-width: 100px; /* 确保按钮有最小宽度 */
+      min-width: 100px;
+      overflow: hidden; /* Important for pseudo-element */
+      box-shadow: var(--button-glass-shadow), var(--button-glass-inset-shadow);
+      text-decoration: none; /* If it's a link styled as a button */
+      display: inline-flex; /* For proper alignment if content varies */
+      align-items: center;
+      justify-content: center;
+    }
 
-      /* 统一拟物化阴影 */
-      box-shadow:
-              -5px -5px 10px rgba(255, 255, 255, 0.05),
-              5px 5px 10px rgba(0, 0, 0, 0.4),
-              inset 2px 2px 5px rgba(255, 255, 255, 0.02),
-              inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+    .carousel-btns button::after, .back-btn button::after, .random-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--button-shine-bg);
+      border-radius: var(--button-glass-radius); /* Match button's border-radius */
+      backdrop-filter: blur(1px);
+      box-shadow: var(--button-shine-shadow-1), var(--button-shine-shadow-2);
+      opacity: var(--button-shine-opacity);
+      z-index: 0; /* Behind content */
+      transition: opacity 0.3s ease;
+    }
+    
+    .carousel-btns button > *, .back-btn button > *, .random-btn > * {
+        position: relative;
+        z-index: 1; /* Ensure text/icon is above shine */
     }
 
     .carousel-btns button:hover, .back-btn button:hover, .random-btn:hover {
-      background-color: var(--button-hover-background);
-      transform: translateY(-2px); /* 轻微上浮，增加动感 */
-      color: var(--secondary-color); /* 悬停时文字颜色变化 */
-      box-shadow:
-              -8px -8px 15px rgba(255, 255, 255, 0.08),
-              8px 8px 15px rgba(0, 0, 0, 0.5),
-              inset 1px 1px 3px rgba(255, 255, 255, 0.03),
-              inset -1px -1px 3px rgba(0, 0, 0, 0.15);
+      background: var(--button-hover-glass-bg);
+      box-shadow: var(--button-hover-glass-shadow), var(--button-hover-glass-inset-shadow);
+      color: var(--secondary-color);
+      transform: translateY(0); /* Override previous transform if any */
+    }
+
+    .carousel-btns button:hover::after, .back-btn button:hover::after, .random-btn:hover::after {
+      opacity: var(--button-hover-shine-opacity);
     }
 
     .carousel-btns button:active, .back-btn button:active, .random-btn:active {
-      transform: translateY(0);
-      background-color: var(--button-active-background);
-      color: var(--primary-color);
-      box-shadow:
-              inset 5px 5px 10px rgba(0, 0, 0, 0.6),
-              inset -5px -5px 10px rgba(255, 255, 255, 0.08),
-              -2px -2px 5px rgba(255, 255, 255, 0.02),
-              2px 2px 5px rgba(0, 0, 0, 0.2);
+      transform: scale(0.98);
+      background: var(--button-glass-bg);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 5px rgba(255,255,255,0.1);
     }
 
     .hidden {
@@ -1275,7 +1423,32 @@
       const itemMarginLeft = parseFloat(itemStyle.marginLeft);
       const itemMarginRight = parseFloat(itemStyle.marginRight);
       const totalItemWidth = itemWidth + itemMarginLeft + itemMarginRight;
-      const offset = -currentIndex * totalItemWidth;
+      
+      // 计算轮播容器的可见宽度
+      const carouselVisibleWidth = elements.albumCarousel.offsetWidth - parseFloat(getComputedStyle(elements.albumCarousel).paddingLeft) - parseFloat(getComputedStyle(elements.albumCarousel).paddingRight);
+      // 计算所有项目的总宽度
+      const totalContentWidth = totalAlbums * totalItemWidth;
+      
+      // 计算基础偏移量
+      let offset = -currentIndex * totalItemWidth;
+
+      // 如果所有项目的总宽度小于或等于容器可见宽度，则不进行偏移，或者根据需要居中
+      if (totalContentWidth <= carouselVisibleWidth) {
+        offset = 0; // 或者计算居中偏移量 (carouselVisibleWidth - totalContentWidth) / 2;
+      } else {
+        // 计算最大允许的偏移量，以防止末尾出现空白
+        // 最大偏移量 = -(所有项目的总宽度 - 轮播容器的可见宽度)
+        const maxOffset = -(totalContentWidth - carouselVisibleWidth);
+        // 如果计算出的偏移量超出了最大允许偏移量（即向左移动太多），则使用最大偏移量
+        if (offset < maxOffset) {
+          offset = maxOffset;
+        }
+        // 同时，确保偏移量不会大于0（即不会向右移动超出初始位置）
+        if (offset > 0) {
+            offset = 0;
+        }
+      }
+      
       elements.carouselInner.style.transform = `translateX(${offset}px)`;
     }
   }
